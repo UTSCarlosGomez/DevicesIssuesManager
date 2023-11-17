@@ -10,7 +10,4 @@ con el proyecto
 
 - Una vez en la carpeta del proyecto escribimos `cd web` y después `npm install`
 
-- Después de instaladas las dependencias debe crear el archivo `.env.local` en el cual deben ir las credenciales de Auth0 con los siguientes nombres:
-`VITE_AUTH0_DOMAIN` y `VITE_AUTH0_CLIENTID`
-
 - Una vez hechos estos pasos ejecutar el proyecto con `npm run dev`
