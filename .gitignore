@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 web/pnpm-lock.yaml
+
+/git
+package-lock.json
+/git add .
