@@ -1,20 +1,25 @@
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 
 const Header = () => {
   return (
-    <header className="d-flex">
-        <h1>Gestor de errores</h1>
-        <nav>
-          <ul className="d-flex gap-4 s">
-            <li>
-              <Link to="/">Inicio</Link>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <NavLink className="navbar-brand" to="/">Gestión de Errores</NavLink>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink className="nav-link active" aria-current="page" to="/">Inicio</NavLink>
             </li>
-            <li>
-              <Link to="/IssueManage">Gestionar</Link>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/issueManage">Gestión de Errores</NavLink>
             </li>
           </ul>
-          </nav>
-    </header>
+        </div>
+      </div>
+    </nav>
   )
 }
 
