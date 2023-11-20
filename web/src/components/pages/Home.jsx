@@ -1,4 +1,4 @@
-/* import React from 'react'; */
+import React from 'react';
 
 const Home = () => {
   const issues = [
@@ -12,9 +12,9 @@ const Home = () => {
       <div className="row mt-5">
         {issues.map((issue, index) => (
           <div key={index} className="col-md-4 mb-4">
-            <div className="card">
-              <div className="card-header text-center bg-success">
-                <h2 className="card-title text-white">{issue.title}</h2>
+            <div className="card" style={{ backgroundColor: '#F0FFF0' }}>
+              <div className="card-header border-secundary mb-3">
+                <h2 className="card-title">{issue.title}</h2>
               </div>
               <div className="card-body">
                 <p className="card-text">{issue.description}</p>
@@ -29,6 +29,5 @@ const Home = () => {
     </main>
   );
 };
-
 
 export default Home;
