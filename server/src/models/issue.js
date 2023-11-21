@@ -1,5 +1,7 @@
-import mongoose from 'mongoose'
+// Importar mongoose para definir el esquema y el modelo
+import mongoose from 'mongoose';
 
+// Definir el esquema para los problemas (issues)
 const issueSchema = new mongoose.Schema({
   creator: {
     id: {
@@ -92,8 +94,10 @@ const issueSchema = new mongoose.Schema({
       }
     }
   ]
-}, { versionKey: false })
+}, { versionKey: false }); // La opción { versionKey: false } evita la inclusión del campo "__v" en los documentos
 
-const Issue = mongoose.model('Issue', issueSchema)
+// Crear el modelo "Issue" basado en el esquema
+const Issue = mongoose.model('Issue', issueSchema);
 
-export default Issue
+// Exportar el modelo para su uso en otros archivos
+export default Issue;

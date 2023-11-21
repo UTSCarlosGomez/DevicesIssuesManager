@@ -1,5 +1,6 @@
+/* Importar mongoose para definir el esquema y el modelo */
 import mongoose from 'mongoose'
-
+/* Definir el esquima para los dispositivos */
 const deviceSchema = new mongoose.Schema({
   code: {
     type: String,
@@ -27,8 +28,10 @@ const deviceSchema = new mongoose.Schema({
       trim: true
     }
   }
-}, { versionKey: false })
+}, { versionKey: false })// La opción { versionKey: false } evita la inclusión del campo "__v" en los documentos
 
-const Device = mongoose.model('Device', deviceSchema)
+// Crear el modelo "Device" basado en el esquema
+const Device = mongoose.model('Device', deviceSchema);
 
-export default Device
+// Exportar el modelo para su uso en otros archivos
+export default Device;
