@@ -1,5 +1,5 @@
 // Importación del modelo User
-import User from '../models/User.js';
+import User from '../models/user.js';
 
 // Controlador para crear un nuevo usuario
 const createUser = async (req, res) => {

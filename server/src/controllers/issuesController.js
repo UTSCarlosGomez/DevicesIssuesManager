@@ -1,7 +1,7 @@
 // Importación de modelos necesarios
-import Device from '../models/Device.js';
+import Device from '../models/device.js';
 import Issue from '../models/issue.js';
-import User from '../models/User.js';
+import User from '../models/user.js';
 
 // Controlador para crear un nuevo problema
 const createIssue = async (req, res) => {

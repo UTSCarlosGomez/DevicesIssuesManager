@@ -1,7 +1,7 @@
 /* Este archivo devicesController.js contiene controladores que manejan las operaciones CRUD  */
 /* Importacion de modelos necesarios */
-import Device from '../models/Device.js'
-import Room from '../models/Room.js'
+import Device from '../models/device.js'
+import Room from '../models/room.js'
 /* Controlador para crear un nuevo dispositivo */
 const createDevice = async (req, res) => {
     const deviceData = req.body

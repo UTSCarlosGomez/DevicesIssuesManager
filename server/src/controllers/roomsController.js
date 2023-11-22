@@ -1,5 +1,5 @@
 // Importación del modelo Room
-import Room from '../models/Room.js';
+import Room from '../models/room.js';
 
 // Controlador para crear una nueva habitación
 const createRoom = async (req, res) => {

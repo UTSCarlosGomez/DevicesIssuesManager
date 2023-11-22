@@ -1,6 +1,6 @@
 /* Importar mongoose para definir el esquema y el modelo */
 import mongoose from 'mongoose'
-/* Definir el esquima para los dispositivos */
+/* Definir el esquema para los dispositivos */
 const deviceSchema = new mongoose.Schema({
   code: {
     type: String,
