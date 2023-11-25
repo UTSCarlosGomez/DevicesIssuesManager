@@ -7,7 +7,7 @@ import roomRoutes from './routes/roomRoutes.js'// Rutas para salas
 import issueRoutes from './routes/issueRoutes.js'// Rutas para incidencias
 import userRoutes from './routes/userRoutes.js'// Rutas para usuarios
 /* Configuracion del puerto */
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 const app = express();// Creación de una instancia de la aplicación Express
 app.use(express.json()); // Middleware para el manejo de datos en formato JSON
 /* Configuracion de las rutas */
