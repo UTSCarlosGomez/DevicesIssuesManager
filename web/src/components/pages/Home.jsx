@@ -1,12 +1,13 @@
 import React from 'react';
 
 const Home = () => {
+  // Lista de incidencias de ejemplo
   const issues = [
-    {title: 'Incidencia 1', description: 'Descripción de la incidencia 1', type: 'Tipo de equipo 1' },
+    { title: 'Incidencia 1', description: 'Descripción de la incidencia 1', type: 'Tipo de equipo 1' },
     { title: 'Incidencia 2', description: 'Descripción de la incidencia 2', type: 'Tipo de equipo 2' },
     // Agrega más incidencias según sea necesario
   ];
-  
+
   return (
     <main className="container">
       <div className="row mt-5">
