@@ -4,10 +4,10 @@ import { getUsers, getUser, createUser, updateUser, deleteUser } from '../contro
 
 const router = Router()
 
-router.get('/', getUsers)
-router.get('/:id', getUser)
-router.post('/', createUser)
-router.put('/:id', updateUser)
-router.delete('/:id', deleteUser)
+router.get('/', getUsers)//obtiene los usuarios
+router.get('/:id', getUser)//obtiene el usuario por su ID
+router.post('/', createUser)//crea un nuevo usuario
+router.put('/:id', updateUser)//actualiza un usuario por su ID
+router.delete('/:id', deleteUser)//elimina un usuario por su ID
 
 export default router

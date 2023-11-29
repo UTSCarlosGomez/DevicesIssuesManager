@@ -4,10 +4,10 @@ import { getRooms, getRoom, createRoom, updateRoom, deleteRoom } from '../contro
 
 const router = Router()
 
-router.get('/', getRooms)
-router.get('/:id', getRoom)
-router.post('/', createRoom)
-router.put('/:id', updateRoom)
-router.delete('/:id', deleteRoom)
+router.get('/', getRooms)//obtiene las salas
+router.get('/:id', getRoom)//obtiene las salas por si ID
+router.post('/', createRoom)//Crea una nueva sala
+router.put('/:id', updateRoom)//Actualizar una sala por su ID
+router.delete('/:id', deleteRoom)//Eliminar una sala por su ID
 
 export default router

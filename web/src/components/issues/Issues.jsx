@@ -5,6 +5,7 @@ import Header from "../Header";
 import TableIssues from "./TableIssues";
 import FormIssues from "./FormIssues";
 import { useNavigate } from "react-router-dom";
+import { getAllIssues, createIssue, updateIssue, deleteIssue } from "../api/issuesApi";
 
 function Issues() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Issues() {
 
     const list = () => {
         // Lógica para obtener la lista de problemas (issues)
-        getListIssues().then((data) => setIssues(data)).catch((err) => console.log(err));
+        getAllIssues().then((data) => setIssues(data)).catch((err) => console.log(err));
     };
 
     if (issues.length === 0) list();
@@ -69,7 +70,7 @@ function Issues() {
         // Lógica para guardar o actualizar un problema
 
         if (issue._id === null) {
-            addIssue(issue).then((data) => list()).catch((err) => console.log(err));
+            createIssue(issue).then((data) => list()).catch((err) => console.log(err));
         } else {
             updateIssue(issue).then((data) => list()).catch((err) => console.log(err));
         }
