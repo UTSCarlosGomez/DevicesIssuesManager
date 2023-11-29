@@ -41,7 +41,6 @@ function Devices() {
                     id: "",
                     name: ""
                 }
-                // Agrega más propiedades según sea necesario
             });
         }
     };
