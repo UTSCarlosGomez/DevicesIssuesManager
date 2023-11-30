@@ -1,5 +1,6 @@
 // Importación de módulos necesarios
 import express from 'express'
+import cors from 'cors'
 import { connectDb } from './db.js'// Importación de la función de conexión a la base de datos
 /* Rutas */
 import deviceRoutes from './routes/deviceRoutes.js'// Rutas para dispositivos
@@ -10,6 +11,7 @@ import userRoutes from './routes/userRoutes.js'// Rutas para usuarios
 const PORT = process.env.PORT || 5000
 const app = express();// Creación de una instancia de la aplicación Express
 app.use(express.json()); // Middleware para el manejo de datos en formato JSON
+app.use(cors())
 /* Configuracion de las rutas */
 app.use('/devices', deviceRoutes);
 app.use('/rooms', roomRoutes);
