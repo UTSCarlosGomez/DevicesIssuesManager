@@ -22,10 +22,23 @@ const deviceSchema = new mongoose.Schema({
       required: true,
       trim: true
     },
-    name: {
+    nombre: {
       type: String,
       required: true,
       trim: true
+    },
+    torre: {
+      type: String,
+      require: true,
+      uppercase: true
+    },
+    piso: {
+      type: Number,
+      require: true
+    },
+    categoria: {
+      type: String,
+      require: true
     }
   }
 }, { versionKey: false })// La opción { versionKey: false } evita la inclusión del campo "__v" en los documentos

@@ -1,25 +1,30 @@
 // Importación de módulos necesarios
 import express from 'express'
 import cors from 'cors'
-import { connectDb } from './db.js'// Importación de la función de conexión a la base de datos
+import mongoose from 'mongoose'
 /* Rutas */
-import deviceRoutes from './routes/deviceRoutes.js'// Rutas para dispositivos
-import roomRoutes from './routes/roomRoutes.js'// Rutas para salas
-import issueRoutes from './routes/issueRoutes.js'// Rutas para incidencias
-import userRoutes from './routes/userRoutes.js'// Rutas para usuarios
-/* Configuracion del puerto */
-const PORT = process.env.PORT || 5000
+import routes from './routes/index.js'
+import bodyParser from 'body-parser'
+
+/* Conexion a la base de datos */
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:27017/incidencia_equipos', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Conectado a la base de datos de mongo'))
+.catch(err => console.error('Error al conectar a MongoDB: ', err))
+
 const app = express();// Creación de una instancia de la aplicación Express
-app.use(express.json()); // Middleware para el manejo de datos en formato JSON
+
+app.use(bodyParser.json()); // Middleware para el manejo de datos en formato JSON
+app.use(bodyParser.urlencoded({extended:true}))
+
 app.use(cors())
 /* Configuracion de las rutas */
-app.use('/devices', deviceRoutes);
-app.use('/rooms', roomRoutes);
-app.use('/issues', issueRoutes);
-app.use('/users', userRoutes);
-/* Conexion a la base de datos */
-connectDb()
+routes(app)
+
 /* Inicio del servidor */
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+app.listen(5000, () => {
+  console.log('Servidor escuchando en el puerto 5000');
 });

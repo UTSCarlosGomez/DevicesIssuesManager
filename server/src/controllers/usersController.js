@@ -15,10 +15,15 @@ const createUser = async (req, res) => {
         // Enviar una respuesta exitosa junto con el usuario creado
         res.status(201).json(user);
     } catch (err) {
+        // Verifica si el error es de duplicación de clave
+        if (err.code === 11000) {
+            return res.status(400).json({ message: 'Ya existe un Salon con el mismo nombre en esta torre' });
+        }
         // Enviar una respuesta de error en caso de algún problema durante la creación
-        res.status(400).json({ message: err.message });
-    }
-};
+        return res.status(400).json({ message: err.message });
+        }
+    };
+
 
 // Controlador para obtener todos los usuarios
 const getUsers = async (_, res) => {
@@ -40,7 +45,7 @@ const getUser = async (req, res) => {
 
     try {
         // Buscar al usuario por su ID en la base de datos
-        const user = User.findById(id);
+        const user = await User.findById(id);
 
         // Verificar si el usuario fue encontrado
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -60,24 +65,21 @@ const updateUser = async (req, res) => {
 
     try {
         // Buscar al usuario por su ID en la base de datos
-        const user = User.findById(id);
+        const user = await User.findById(id);
 
         // Verificar si el usuario fue encontrado
-        if (user) {
-            // Actualizar la información del usuario con los nuevos datos
-            user.name = userData.name;
-            user.lastname = userData.lastname;
-            user.email = userData.email;
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
-            // Guardar los cambios en la base de datos
-            await user.save();
+        // Actualizar la información del usuario con los nuevos datos
+        user.name = userData.name || user.name;
+        user.email = userData.email || user.email;
+        user.password = userData.password || user.password;
 
-            // Enviar el usuario actualizado como respuesta
-            res.json(user);
-        }
+        // Guardar los cambios en la base de datos
+        await user.save();
 
-        // Enviar una respuesta de error si el usuario no fue encontrado
-        return res.status(404).json({ message: 'User not found' });
+        // Enviar el usuario actualizado como respuesta
+        res.json(user);
     } catch (err) {
         // Enviar una respuesta de error en caso de algún problema
         return res.status(500).json({ message: err.message });
@@ -90,19 +92,13 @@ const deleteUser = async (req, res) => {
 
     try {
         // Buscar al usuario por su ID en la base de datos
-        const user = User.findById(id);
+        const user = await User.findByIdAndDelete(id);
 
         // Verificar si el usuario fue encontrado
-        if (user) {
-            // Eliminar al usuario de la base de datos
-            await user.remove();
-
-            // Enviar una respuesta indicando que el usuario fue eliminado
-            return res.json({ message: 'User deleted' });
-        }
-
-        // Enviar una respuesta de error si el usuario no fue encontrado
-        return res.status(404).json({ message: 'User not found' });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        
+        // Enviar una respuesta indicando que el usuario fue eliminado
+        return res.json({ message: 'User deleted' });
     } catch (err) {
         // Enviar una respuesta de error en caso de algún problema
         return res.status(500).json({ message: err.message });

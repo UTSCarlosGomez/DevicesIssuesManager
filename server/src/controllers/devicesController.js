@@ -6,19 +6,27 @@ import Room from '../models/room.js'
 const createDevice = async (req, res) => {
     const deviceData = req.body
      /* Buscar la sala asociada al dispositivo */
+    try {
     const room = await Room.findById(deviceData.roomId).exec()
+    
+    if (!room) {
+        return res.status(404).json({ message: 'Room not found' });
+    }
     /* Crear un nuevo dispositivo utilizando los datos proporcionados */
     const device = new Device({
         code: deviceData.code,
         brand: deviceData.brand,    
         description: deviceData.description,
         room: {
-            id: room._id,
-            name: room.name
-        }
+                id: room._id,
+                nombre: room.nombre,    // Asegurando que el nombre se asigne correctamente
+                torre: room.torre,
+                piso: room.piso,
+                categoria: room.categoria
+            }
     })
 
-    try {
+    
         await device.save()// Guardar el dispositivo en la base de datos
         /* Enviar una respuesta exitosa junto con el dispositivo creado */
         return res.status(201).json(device)
@@ -87,16 +95,13 @@ const deleteDevice = async (req, res) => {
 
     try {
         /* Buscar el equipo en la DB */
-        const device = await Device.findById(id).exec()
+        const device = await Device.findByIdAndDelete(id);
         /* verifica si el equipo fue encontrado */
-        if (device) {
-            /* Elimina el equipo de la DB */
-            await device.remove()
+        if (!device) return res.status(404).json({message:'Device not found'})
+            
             /* Mensaje que elimino el equipo */
             return res.json({ message: 'Device removed' })
-        }
-        /* Mensaje si no se encuentra el equipo */
-        return res.status(404).json({ message: 'Device not found' })
+        
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }

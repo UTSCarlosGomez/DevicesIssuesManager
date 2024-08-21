@@ -5,18 +5,21 @@ import Room from '../models/room.js';
 const createRoom = async (req, res) => {
   const roomData = req.body;
 
-  // Crear una nueva instancia de Room utilizando los datos proporcionados
-  const room = new Room({
-    name: roomData.name
-  });
-
+  
   try {
+    // Crear una nueva instancia de Room utilizando los datos proporcionados
+    const room = new Room(roomData);
+
     // Guardar la nueva habitación en la base de datos
     await room.save();
 
     // Enviar una respuesta exitosa junto con la habitación creada
     return res.status(201).json(room);
   } catch (err) {
+    // Verifica si el error es de duplicación de clave
+    if (err.code === 11000) {
+      return res.status(400).json({ message: 'Ya existe un Salon con el mismo nombre en esta torre' });
+    }
     // Enviar una respuesta de error en caso de algún problema durante la creación
     return res.status(400).json({ message: err.message });
   }
@@ -68,22 +71,35 @@ const updateRoom = async (req, res) => {
     const room = await Room.findById(id).exec();
 
     // Verificar si la habitación fue encontrada
-    if (room) {
-      // Actualizar la información de la habitación con los nuevos datos
-      room.name = roomData.name;
-
-      // Guardar los cambios en la base de datos
-      await room.save();
-
-      // Enviar la habitación actualizada como respuesta
-      return res.json(room);
+    if (!room) {
+      return res.status(404).json({ message: 'Room not found' });
     }
 
-    // Enviar una respuesta de error si la habitación no fue encontrada
-    return res.status(404).json({ message: 'Room not found' });
+    // Actualizar la información de la habitación con los nuevos datos
+    room.nombre = roomData.nombre || room.nombre;
+    room.torre = roomData.torre || room.torre;
+    room.piso = roomData.piso || room.piso;
+    room.categoria = roomData.categoria || room.categoria;
+
+    // Guardar los cambios en la base de datos
+    try {
+      await room.save();
+    } catch (err) {
+      // Verifica si el error es de duplicación de clave
+      if (err.code === 11000) {
+        return res.status(400).json({ message: 'Ya existe una habitación con el mismo nombre en esta torre' });
+      }
+
+      // Enviar una respuesta de error en caso de algún otro problema
+      return res.status(500).json({ message: err.message });
+    }
+
+    // Enviar la habitación actualizada como respuesta
+    return res.json(room);
+
   } catch (err) {
     // Enviar una respuesta de error en caso de algún problema
-    return res.status(400).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -93,20 +109,14 @@ const deleteRoom = async (req, res) => {
 
   try {
     // Buscar la habitación por su ID en la base de datos
-    const room = await Room.findById(id).exec();
+    const room = await Room.findByIdAndDelete(id);
+
+    if(!room) return res.status(404).json({message:'Room not found'});
+
+    return res.json({message: 'Room deleted'})
 
     // Verificar si la habitación fue encontrada
-    if (room) {
-      // Eliminar la habitación de la base de datos
-      await room.deleteOne();
-
-      // Enviar una respuesta indicando que la habitación fue eliminada
-      return res.json({ message: 'Room removed' });
-    }
-
-    // Enviar una respuesta de error si la habitación no fue encontrada
-    return res.status(404).json({ message: 'Room not found' });
-  } catch (err) {
+  }catch(err){
     // Enviar una respuesta de error en caso de algún problema
     return res.status(500).json({ message: err.message });
   }

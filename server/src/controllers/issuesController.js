@@ -61,7 +61,7 @@ const getIssue = async (req, res) => {
 
   try {
     // Buscar el problema por su ID en la base de datos
-    const issue = Issue.findById(id);
+    const issue = await Issue.findById(id).exec();
 
     // Verificar si el problema fue encontrado
     if (!issue) return res.status(404).json({ message: 'Issue not found' });
@@ -81,7 +81,7 @@ const updateIssue = async (req, res) => {
 
   try {
     // Buscar el problema por su ID en la base de datos
-    const issue = Issue.findById(id);
+    const issue = await Issue.findById(id).exec();
 
     // Verificar si el problema fue encontrado
     if (issue) {
@@ -112,19 +112,14 @@ const deleteIssue = async (req, res) => {
 
   try {
     // Buscar el problema por su ID en la base de datos
-    const issue = Issue.findById(id);
+    const issue = await Issue.findByIdAndDelete(id);
 
     // Verificar si el problema fue encontrado
-    if (issue) {
-      // Eliminar el problema de la base de datos
-      await issue.remove();
-
+    if (!issue) return res.status(404).json({ message: 'Issue not found' });
       // Enviar una respuesta indicando que el problema fue eliminado
-      res.json({ message: 'Issue removed' });
-    }
+      return res.json({ message: 'Issue removed' });
 
-    // Enviar una respuesta de error si el problema no fue encontrado
-    res.status(404).json({ message: 'Issue not found' });
+      
   } catch (err) {
     // Enviar una respuesta de error en caso de algún problema
     res.status(500).json({ message: err.message });
@@ -141,7 +136,7 @@ const addNote = async (req, res) => {
     const issue = await Issue.findById(id).exec();
 
     // Verificar si el problema fue encontrado
-    if (issue) {
+    if (!issue) return res.status(404).json({ message: 'Issue not found' });
       // Agregar la nota al problema
       issue.notes.push({
         content: noteData.content,
@@ -153,7 +148,7 @@ const addNote = async (req, res) => {
 
       // Enviar el problema actualizado como respuesta
       return res.json(issue);
-    }
+    
   } catch (err) {
     // Enviar una respuesta de error en caso de algún problema
     return res.status(500).json({ message: err.message });

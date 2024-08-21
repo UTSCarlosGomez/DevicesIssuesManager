@@ -5,22 +5,19 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
   },
-  lastname: {
-    type: String,
-    trim: true
-  },
-  auth0_id: {
-    type: String,
-    required: true,
-    trim: true
-  },
+
   email: {
     type: String,
-    trim: true
+    trim: true,
+    unique: true,
+    lowercase: true
   },
-}, { versionKey: false })// La opción { versionKey: false } evita la inclusión del campo "__v" en los documentos
+  password: {
+    type: String,
+    required: true
+  }
+}, { versionKey: false })
 /* Crea el modelo user basado en el esquema */
 const User = mongoose.model('User', userSchema)
 /* exporta el modelo */
