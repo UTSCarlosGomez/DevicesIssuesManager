@@ -36,6 +36,10 @@ const deviceSchema = new mongoose.Schema({
       type: Number,
       require: true
     },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
     categoria: {
       type: String,
       require: true
