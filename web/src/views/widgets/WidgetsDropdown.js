@@ -296,7 +296,7 @@ const WidgetsDropdown = () => {
           onClick={() => handleRedirect('/issues')}
           style={{ cursor: 'pointer' }}
           chart={
-            <CChartBar
+            <CChartLine
               className="mt-3 mx-3"
               style={{ height: '70px' }}
               data={{

@@ -54,6 +54,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const Users = React.lazy(() => import('./views/users/Users'))
 const Rooms = React.lazy(() => import('./views/rooms/Rooms'))
 const Devices = React.lazy(() => import('./views/devices/Devices'))
+const Issues = React.lazy(() => import('./views/issues/Issues'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -61,6 +62,7 @@ const routes = [
   { path: '/users', name: 'Users', element: Users },
   { path: '/rooms', name: 'Rooms', element: Rooms },
   { path: '/devices', name: 'Devices', element: Devices },
+  { path: '/issues', name: 'Issues', element: Issues },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 import clienteAxios from "../../config/axios";
-import { CCard, CCardBody, CCardHeader, CCol, CRow } from "@coreui/react";
+import { CCard, CCardBody, CCardFooter, CCardHeader, CCol, CRow } from "@coreui/react";
 
 const Devices = () => {
     const [devices, setDevices] = useState([])
@@ -42,7 +42,6 @@ const Devices = () => {
                                             )}
                                         </CCardBody>
                                     </CCard>
-
                                 </CCol>
                             ))}
                         </CRow>
