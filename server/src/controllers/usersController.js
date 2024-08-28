@@ -3,15 +3,14 @@ import User from '../models/user.js';
 
 // Controlador para crear un nuevo usuario
 const createUser = async (req, res) => {
-    const userData = req.body;
+    const {name, email, password, role} = req.body;
 
     try {
         // Crear una nueva instancia de User utilizando los datos proporcionados
-        const user = new User(userData);
+        const user = new User({name, email, password, role});
 
         // Guardar el nuevo usuario en la base de datos
         await user.save();
-
         // Enviar una respuesta exitosa junto con el usuario creado
         res.status(201).json(user);
     } catch (err) {
@@ -61,7 +60,7 @@ const getUser = async (req, res) => {
 // Controlador para actualizar la información de un usuario
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const userData = req.body;
+    const {name, email, password, role} = req.body;
 
     try {
         // Buscar al usuario por su ID en la base de datos
@@ -71,13 +70,13 @@ const updateUser = async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         // Actualizar la información del usuario con los nuevos datos
-        user.name = userData.name || user.name;
-        user.email = userData.email || user.email;
-        user.password = userData.password || user.password;
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.password = password || user.password;
+        user.role = role || user.role;
 
         // Guardar los cambios en la base de datos
         await user.save();
-
         // Enviar el usuario actualizado como respuesta
         res.json(user);
     } catch (err) {
