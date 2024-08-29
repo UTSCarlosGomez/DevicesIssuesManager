@@ -1,5 +1,6 @@
 import { element } from 'prop-types'
 import React from 'react'
+import PrivateRoute from './components/PrivateRoute'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
@@ -59,7 +60,16 @@ const Issues = React.lazy(() => import('./views/issues/Issues'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/users', name: 'Users', element: Users },
+  // eslint-disable-next-line prettier/prettier
+  {
+    path: '/users',
+    name: 'Users',
+    element: () => (
+      <PrivateRoute roles={['admin']}>
+        <Users />
+      </PrivateRoute>
+    ),
+  },
   { path: '/rooms', name: 'Rooms', element: Rooms },
   { path: '/devices', name: 'Devices', element: Devices },
   { path: '/issues', name: 'Issues', element: Issues },

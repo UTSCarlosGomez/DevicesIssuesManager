@@ -24,7 +24,7 @@ const Dashboard = () => {
       }
     }
     consultarAPI()
-  }, [users])
+  }, [])
 
   return (
     <>
