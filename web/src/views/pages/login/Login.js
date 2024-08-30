@@ -18,6 +18,7 @@ const Login = () => {
       const response = await clienteAxios.post('/auth/login', { email, password })
       const { token, user } = response.data
 
+
       // Guardar el token y la información del usuario en el localStorage
       localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify(user))
