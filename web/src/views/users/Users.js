@@ -69,7 +69,7 @@ const Users = () => {
                     <CTableDataCell>{user.role}</CTableDataCell>
 
                     <CTableDataCell>
-                      <CButton color="primary" onClick={() => { setSelectedUser(user); setIsEditing(true) }}>Edit</CButton>
+                      <CButton color="primary" onClick={() => { setSelectedUser(user); setIsEditing(true) }} style={{marginRight: '10px'}}>Edit</CButton>
                       <CButton color="danger" className='text-white' onClick={() => { setSelectedUser(user); setIsDeleting(true) }}>Delete</CButton>
 
                     </CTableDataCell>
