@@ -14,7 +14,7 @@ const createDevice = async (req, res) => {
     }
     /* Crear un nuevo dispositivo utilizando los datos proporcionados */
     const device = new Device({
-        code: deviceData.code,
+
         brand: deviceData.brand,    
         description: deviceData.description,
         room: {
@@ -67,25 +67,37 @@ const getDevices = async (req, res) => {
 /* Actualizar equipo */
 const updateDevice = async (req, res) => {
     const { id } = req.params
-    const deviceData = req.body
+    const {brand, description, roomId} = req.body
 
     try {
-        /* Busca el dispositivo por su ID en la DB */
-        const device = await Device.findById(id).exec()
-        /* Verificar si encuentra el dispositivo */
-        if (device) {
-            /* Actualizar la informacion */
-            device.code = deviceData.code
-            device.brand = deviceData.brand
-            device.description = deviceData.description
-            /* Guarda los cambios en la DB */
-            await device.save()
-            /* Enviar el equipo actualizado */
-            return res.json(device)
+        // Buscar el dispositivo existente
+        const device = await Device.findById(id).exec();
+        if (!device) {
+            return res.status(404).json({ message: 'Device not found' });
         }
-        /* Respuesta si el equipo no se encuentra */
-        return res.status(404).json({ message: 'Device not found' })
-    } catch (err) {
+
+        // Buscar la sala asociada al roomId
+        const room = await Room.findById(roomId).exec();
+        if (!room) {
+            return res.status(404).json({ message: 'Room not found' });
+        }
+        // Actualizar campos del dispositivo
+        device.brand = brand;
+        device.description = description;
+        device.room = {
+            id: room._id,
+            nombre: room.nombre,
+            torre: room.torre,
+            piso: room.piso,
+            categoria: room.categoria
+        };
+        // Guardar los cambios en la base de datos
+        await device.save();
+
+        // Responder con el dispositivo actualizado
+        return res.status(200).json(device);
+        
+        } catch (err) {
         return res.status(400).json({ message: err.message })
     }
 }

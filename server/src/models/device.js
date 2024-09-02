@@ -1,11 +1,12 @@
-/* Importar mongoose para definir el esquema y el modelo */
-import mongoose from 'mongoose'
-/* Definir el esquema para los dispositivos */
+import mongoose from 'mongoose';
+
+// Definir el esquema para los dispositivos
 const deviceSchema = new mongoose.Schema({
   code: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    unique: true
   },
   brand: {
     type: String,
@@ -29,26 +30,43 @@ const deviceSchema = new mongoose.Schema({
     },
     torre: {
       type: String,
-      require: true,
+      required: true,
       uppercase: true
     },
     piso: {
       type: Number,
-      require: true
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
+      required: true
     },
     categoria: {
       type: String,
-      require: true
+      required: true
+    }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+}, { versionKey: false });
+
+// Middleware para generar el código automáticamente antes de guardar
+deviceSchema.pre('validate', async function (next) {
+  const device = this;
+  
+  // Solo generar código si es un nuevo documento
+  if (device.isNew) {
+    try {
+      const lastDevice = await mongoose.model('Device').findOne().sort({ createdAt: -1 });
+      const lastCode = lastDevice ? parseInt(lastDevice.code.replace('DEV', '')) : 0;
+      device.code = `DEV${String(lastCode + 1).padStart(3, '0')}`;
+    } catch (error) {
+      return next(error);
     }
   }
-}, { versionKey: false })// La opción { versionKey: false } evita la inclusión del campo "__v" en los documentos
+
+  next();
+});
 
 // Crear el modelo "Device" basado en el esquema
 const Device = mongoose.model('Device', deviceSchema);
 
-// Exportar el modelo para su uso en otros archivos
 export default Device;

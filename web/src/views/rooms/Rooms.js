@@ -50,7 +50,7 @@ const Rooms = () => {
                         <CRow>
                             {rooms.map((room) => (
                                 <CCol xs={12} sm={6} md={4} key={room._id || room.id} >
-                                    <CCard >
+                                    <CCard style={{marginBottom:'10px'}}>
                                         <CCardHeader>
                                             <h5><strong>Salon:</strong> {room.nombre}{room.torre}</h5>
                                         </CCardHeader>
