@@ -44,6 +44,7 @@ const Dashboard = () => {
                     <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
 
                     <CTableHeaderCell className="bg-body-tertiary">Email</CTableHeaderCell>
+                    <CTableHeaderCell className="bg-body-tertiary">Role</CTableHeaderCell>
 
                     <CTableHeaderCell className="bg-body-tertiary">Accion</CTableHeaderCell>
                   </CTableRow>
@@ -62,6 +63,9 @@ const Dashboard = () => {
 
                       <CTableDataCell>
                           <div className="fw-semibold">{user.email}</div>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                          <div className="fw-semibold">{user.role}</div>
                       </CTableDataCell>
 
                       <CTableDataCell>

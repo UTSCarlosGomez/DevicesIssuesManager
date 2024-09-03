@@ -1,20 +1,23 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import clienteAxios from "../../config/axios";
-import { CCard, CCardBody, CCardHeader, CCardText, CCardTitle, CCol, CRow } from "@coreui/react";
+import { CCard, CCardBody, CCardHeader, CCardText, CCardTitle, CCol, CRow, CButton, CCardFooter } from "@coreui/react";
 
 const Issues = () => {
     const [issues, setIssues] = useState([]);
+    const navigate = useNavigate()
+    const fetchIssues = async () => {
+        try {
+            const response = await clienteAxios.get('/issues');
+            setIssues(response.data);
+        } catch (error) {
+            console.error('Error fetching Issues: ', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchIssues = async () => {
-            try {
-                const response = await clienteAxios.get('/issues');
-                setIssues(response.data);
-            } catch (error) {
-                console.error('Error fetching Issues: ', error);
-            }
-        };
+        
         fetchIssues();
     }, []);
 
@@ -22,12 +25,16 @@ const Issues = () => {
         <CRow>
             <CCol xs={12}>
                 <CCard>
-                    <CCardHeader><strong>Issues</strong></CCardHeader>
+                    <CCardHeader><strong>Issues</strong>
+                    <CButton color="primary" style={{float: 'right'}} onClick={() => navigate('/issues/create-issues')}>
+                        Create Room
+                    </CButton>
+                    </CCardHeader>
                     <CCardBody>
                         <CRow>
                             {issues.map((issue) => (
                                 <CCol xs={12} sm={6} md={4} key={issue._id}>
-                                    <CCard>
+                                    <CCard style={{marginBottom: '10px'}}>
                                         <CCardHeader>
                                             <h6>Created by: {issue.creator.name}</h6>
                                         </CCardHeader>
@@ -76,6 +83,9 @@ const Issues = () => {
                                                 </div>
                                             )}
                                         </CCardBody>
+                                        <CCardFooter>
+                                            <CButton color="primary" style={{float: 'right'}} onClick={() => navigate(`/issues/view-issue/${issue._id}`)}>View</CButton>
+                                        </CCardFooter>
                                     </CCard>
                                 </CCol>
                             ))}

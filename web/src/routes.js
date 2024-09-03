@@ -56,6 +56,8 @@ const Users = React.lazy(() => import('./views/users/Users'))
 const Rooms = React.lazy(() => import('./views/rooms/Rooms'))
 const Devices = React.lazy(() => import('./views/devices/Devices'))
 const Issues = React.lazy(() => import('./views/issues/Issues'))
+const FormIssues = React.lazy(() => import('./views/issues/FormIssues'))
+const Issue = React.lazy(() => import('./views/issues/Issue'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -73,6 +75,8 @@ const routes = [
   { path: '/rooms', name: 'Rooms', element: Rooms },
   { path: '/devices', name: 'Devices', element: Devices },
   { path: '/issues', name: 'Issues', element: Issues },
+  { path: '/issues/create-issues', name: 'Create Issues', element: FormIssues },
+  { path: '/issues/view-issue/:id', name: 'View Issue', element: Issue },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
