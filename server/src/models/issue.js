@@ -1,5 +1,5 @@
 // Importar mongoose para definir el esquema y el modelo
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 // Definir el esquema para los problemas (issues)
 const issueSchema = new mongoose.Schema({
@@ -16,16 +16,8 @@ const issueSchema = new mongoose.Schema({
     }
   },
   device: {
-    id: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    code: {
-      type: String,
-      required: true,
-      trim: true
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'Device'
   },
   type: {
     type: String,

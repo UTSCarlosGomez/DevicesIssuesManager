@@ -18,10 +18,7 @@ const createIssue = async (req, res) => {
         id: user._id,
         name: user.name
       },
-      device: {
-        id: device._id,
-        code: device.code
-      },
+      device: device._id,
       type: issueData.type,
       description: issueData.description,
       deviceStatus: issueData.deviceStatus,
@@ -45,10 +42,14 @@ const createIssue = async (req, res) => {
 const getIssues = async (_, res) => {
   try {
     // Obtener todos los problemas de la base de datos
-    const issues = await Issue.find();
+    const issues = await Issue.find().populate({
+      path: 'device',
+      populate: {path: 'room'}
+    }).exec();
 
     // Enviar la lista de problemas como respuesta
     res.json(issues);
+
   } catch (err) {
     // Enviar una respuesta de error en caso de algún problema
     res.status(500).json({ message: err.message });
@@ -61,7 +62,12 @@ const getIssue = async (req, res) => {
 
   try {
     // Buscar el problema por su ID en la base de datos
-    const issue = await Issue.findById(id).exec();
+    const issue = await Issue.findById(id)
+    .populate({
+      path: 'device',
+      populate: {path: 'room'}
+    })
+    .exec();
 
     // Verificar si el problema fue encontrado
     if (!issue) return res.status(404).json({ message: 'Issue not found' });

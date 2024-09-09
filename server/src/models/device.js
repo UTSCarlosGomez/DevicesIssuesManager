@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 // Definir el esquema para los dispositivos
 const deviceSchema = new mongoose.Schema({
@@ -17,30 +17,10 @@ const deviceSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // Cambiar la estructura de room a una referencia
   room: {
-    id: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    nombre: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    torre: {
-      type: String,
-      required: true,
-      uppercase: true
-    },
-    piso: {
-      type: Number,
-      required: true
-    },
-    categoria: {
-      type: String,
-      required: true
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'Room'
   },
   createdAt: {
     type: Date,

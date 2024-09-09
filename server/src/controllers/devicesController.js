@@ -4,10 +4,10 @@ import Device from '../models/device.js'
 import Room from '../models/room.js'
 /* Controlador para crear un nuevo dispositivo */
 const createDevice = async (req, res) => {
-    const deviceData = req.body
+    const {brand, description, roomId} = req.body
      /* Buscar la sala asociada al dispositivo */
     try {
-    const room = await Room.findById(deviceData.roomId).exec()
+    const room = await Room.findById(roomId).exec()
     
     if (!room) {
         return res.status(404).json({ message: 'Room not found' });
@@ -15,15 +15,9 @@ const createDevice = async (req, res) => {
     /* Crear un nuevo dispositivo utilizando los datos proporcionados */
     const device = new Device({
 
-        brand: deviceData.brand,    
-        description: deviceData.description,
-        room: {
-                id: room._id,
-                nombre: room.nombre,    // Asegurando que el nombre se asigne correctamente
-                torre: room.torre,
-                piso: room.piso,
-                categoria: room.categoria
-            }
+        brand,   
+        description,
+        room: room._id,
     })
 
     
@@ -40,13 +34,14 @@ const getDevice = async (req, res) => {
     const { id } = req.params
 
     try {
-        const device = await Device.findById(id).exec()// Buscar el dispositivo por su ID en la base de datos
+        const device = await Device.findById(id).populate('room').exec()// Buscar el dispositivo por su ID en la base de datos
         /* Buscar el dispositivo por su ID en la base de datos */
-        if (device) {
-            return res.json(device)// Enviar el dispositivo como respuesta
+        if (!device) {
+            return res.status(404).json({ message: 'Device not found' })
         }
-        /*  Enviar el dispositivo como respuesta */
-        return res.status(404).json({ message: 'Device not found' })
+        
+        // Enviar el dispositivo con los detalles completos de la sala
+        return res.json(device)
         /* Enviar una respuesta de error en caso de algún problema */
     } catch (err) {
         return res.status(400).json({ message: err.message })
@@ -56,7 +51,10 @@ const getDevice = async (req, res) => {
 const getDevices = async (req, res) => {
     try {
         /* Obtener todo los dispositivos de la base de datos */
-        const devices = await Device.find()
+        const devices = await Device.find().populate('room').exec()
+        
+        
+
         /* Enviar la lista de dispositivos */
         return res.json(devices)
     } catch (err) {
