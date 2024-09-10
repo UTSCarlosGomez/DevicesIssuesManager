@@ -30,31 +30,23 @@ const issueSchema = new mongoose.Schema({
   },
   deviceStatus: {
     type: String,
-    trim: true
+    trim: true,
+    enum: ['Fixed', 'Damaged', 'Unknown', 'Not Working', 'Working'], // Asegúrate de usar el enum si quieres limitar los valores
+    default: 'Unknown'
   },
   status: {
     type: String,
-    trim: true
+    trim: true,
+    enum: ['Open', 'InProgress', 'Closed'], // Asegúrate de tener los valores correctos
+    default: 'Open'
   },
   createdAt: {
     type: Date,
     default: Date.now
   },
   notes: [{
-    content: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    creatorName: {
-      type: String,
-      required: true,
-      trim: true
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'Note'
   }],
   issuesManagement: [
     {

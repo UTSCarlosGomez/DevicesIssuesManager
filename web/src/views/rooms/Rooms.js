@@ -55,9 +55,9 @@ const Rooms = () => {
                                             <h5><strong>Salon:</strong> {room.nombre}{room.torre}</h5>
                                         </CCardHeader>
                                         <CCardBody>
-                                            
-                                            <h6><strong>piso:</strong> {room.piso}</h6>
-                                            <p>{room.categoria}</p>
+                                            <h6><strong>Torre: </strong>{room.torre}</h6>
+                                            <p><strong>Piso:</strong> {room.piso}</p>
+                                            <p><strong>Categoria: </strong>{room.categoria}</p>
                                         </CCardBody>
                                         <CCardFooter>
                                             <CButton color="primary" style={{marginRight: '10px'}} onClick={() => {setSelectedRoom(room); setIsEditing(true)}}>Edit</CButton>

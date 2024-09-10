@@ -95,17 +95,17 @@ const FormIssues = () => {
                                 <CFormLabel>Devices Status: </CFormLabel>
                                 <CFormSelect value={devicesStatus} onChange={(e) => setDevicesStatus(e.target.value)}>
                                     <option value="">Select Status</option>
-                                    <option value="not working">Not Working</option>
-                                    <option value="unknow">Unknow</option>
-                                    <option value="working">Working</option>
+                                    <option value="Not Working">Not Working</option>
+                                    <option value="Unknow">Unknow</option>
+                                    <option value="Working">Working</option>
                                 </CFormSelect>
                             </div>
                             <div className="mb-3">
                                 <CFormLabel>Status: </CFormLabel>
                                 <CFormSelect value={status} onChange={(e) => setStatus(e.target.value)}>
                                     <option value="">Select Status</option>
-                                    <option value="open">Open</option>
-                                    <option value="close">Close</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Close">Close</option>
                                 </CFormSelect>
                             </div>
                             <div className="mb-3">

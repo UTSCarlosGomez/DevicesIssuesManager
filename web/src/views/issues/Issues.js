@@ -27,7 +27,7 @@ const Issues = () => {
                 <CCard>
                     <CCardHeader><strong>Issues</strong>
                     <CButton color="primary" style={{float: 'right'}} onClick={() => navigate('/issues/create-issues')}>
-                        Create Room
+                        Create Issue
                     </CButton>
                     </CCardHeader>
                     <CCardBody>
@@ -48,20 +48,10 @@ const Issues = () => {
                                                 <strong>Status:</strong> {issue.status || 'No status'}
                                             </CCardText>
                                             {/* Mostrar notas si las hay */}
-                                            {issue.notes.length > 0 && (
-                                                <div>
-                                                    <strong>Notes:</strong>
-                                                    <ul>
-                                                        {issue.notes.map((note, index) => (
-                                                            <li key={index}>
-                                                                {note.creatorName}: {note.content} (on {new Date(note.createdAt).toLocaleDateString()})
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            )}
+                                            <strong>Number of Notes:</strong> {issue.notes?.length || 0} <br />
+                                            <strong>Status:</strong> {issue.status || 'No status'}
                                             {/* Mostrar detalles de issuesManagement si los hay */}
-                                            {issue.issuesManagement.length > 0 && (
+                                            {issue.issuesManagement?.length > 0 && (
                                                 <div>
                                                     <strong>Management:</strong>
                                                     <ul>

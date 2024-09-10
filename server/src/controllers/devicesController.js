@@ -82,13 +82,7 @@ const updateDevice = async (req, res) => {
         // Actualizar campos del dispositivo
         device.brand = brand;
         device.description = description;
-        device.room = {
-            id: room._id,
-            nombre: room.nombre,
-            torre: room.torre,
-            piso: room.piso,
-            categoria: room.categoria
-        };
+        device.room = room._id;
         // Guardar los cambios en la base de datos
         await device.save();
 

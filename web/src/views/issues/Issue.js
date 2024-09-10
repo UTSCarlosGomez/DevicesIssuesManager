@@ -1,26 +1,99 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import clienteAxios from "../../config/axios";
-import { CCard, CCardBody, CCardHeader, CCardText, CCardTitle, CCol, CRow } from "@coreui/react";
+import { CButton, CCard, CCardBody, CCardHeader, CCardText, CCardTitle, CCol, CForm, CFormTextarea, CRow } from "@coreui/react";
 
 const Issue = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [issue, setIssue] = useState(null);
+    const [note, setNote] = useState("");
+    const [status, setStatus] = useState('');
+    const [devicesStatus, setDevicesStatus] = useState('');
 
+
+    const fetchIssue = async () => {
+        try {
+            const response = await clienteAxios.get(`/issues/${id}`);
+            setIssue(response.data);
+            setStatus(response.data.status);
+        } catch (error) {
+            console.error('Error fetching issue:', error);
+        }
+    };
     useEffect(() => {
-        const fetchIssue = async () => {
-            try {
-                const response = await clienteAxios.get(`/issues/${id}`);
-                setIssue(response.data);
-            } catch (error) {
-                console.error('Error fetching issue:', error);
-            }
-        };
-
+        
         fetchIssue();
     }, [id]);
 
+    //funcion para agregar una nota
+    const handleAddNote = async () => {
+        try {
+            await clienteAxios.post(`/issues/${id}/addNote`, {
+                content: note,
+                creatorName: "Admin",
+            });
+            setNote("");
+
+            setNote("");
+            fetchIssue();
+        } catch (error) {
+            console.error("Error adding Note: ", error)
+        }
+    }
+
+    //funcion para el estado de la incidencia 
+    const handleCloseIssue = async() => {
+        try {
+
+            await clienteAxios.put(`/issues/${id}`,{
+                status: "Closed",
+                deviceStatus: "Fixed",
+            });
+
+            setStatus("Closed");
+            navigate("/issues");
+        } catch (error) {
+            console.error('Error closing Issue: ', error);
+        }
+    }
+
+    const handleEditNote = async (noteId) => {
+        const newContent = prompt("Edit the note: ", note)
+        if(!newContent)return;
+
+        try {
+            await clienteAxios.put(`/issues/${id}/notes/${noteId}`, {content: newContent})
+            fetchIssue();
+        } catch (error) {
+            console.error("Error editing note: ", error)
+        }
+    }
+    const handleDeleteNote = async (noteId) => {
+        if(!window.confirm("Are you sure you want to delete this note?")) return;
+
+        try {
+            await clienteAxios.delete(`/issues/${id}/notes/${noteId}`)
+            fetchIssue();
+        } catch (error) {
+            console.error("Error deleting note: ", error)
+        }
+    }
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    const handleReopenIssue = async () => {
+        try {
+            await clienteAxios.put(`/issues/${id}`, {
+                status: "Open",
+            });
+            setStatus("Open");
+            navigate("/issues");
+        } catch (error) {
+            console.error('Error reopening Issue: ', error);
+        }
+    };
     if (!issue) {
         return <div>Loading...</div>;
     }
@@ -51,32 +124,36 @@ const Issue = () => {
                                     {issue.notes.map((note, index) => (
                                         <li key={index}>
                                             {note.creatorName}: {note.content} (on {new Date(note.createdAt).toLocaleDateString()})
+                                            <CButton color="warning" size="sm" className="text-white" style={{margin: '5px'}} onClick={() => handleEditNote(note._id)}>Edit</CButton>
+                                            <CButton color="danger" size="sm" className="text-white" onClick={() => handleDeleteNote(note._id)}>Delete</CButton>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         )}
 
-                        {/* Mostrar detalles de issuesManagement si los hay */}
-                        {issue.issuesManagement?.length > 0 && (
-                            <div>
-                                <strong>Management:</strong>
-                                <ul>
-                                    {issue.issuesManagement.map((management, index) => (
-                                        <li key={index}>
-                                            <strong>Responsible:</strong> {management.responsible.name} <br />
-                                            <strong>Description:</strong> {management.description || 'No description'} <br />
-                                            <strong>Start Date:</strong> {new Date(management.startDate).toLocaleDateString()} <br />
-                                            {management.endDate && (
-                                                <>
-                                                    <strong>End Date:</strong> {new Date(management.endDate).toLocaleDateString()} <br />
-                                                </>
-                                            )}
-                                            <strong>Used Objects:</strong> {management.usedObjects || 'None'}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                        {status === "Open" && (
+                            <CForm>
+                                <CFormTextarea
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    placeholder="Add a note about the solution"
+                                />
+                                <CButton color="primary" onClick={handleAddNote} style={{marginTop: "10px"}}>
+                                Add Note
+                                </CButton>
+                            </CForm>
+                        )}
+                        {status === "Open" && user.role === "admin" && (
+                            <CButton color="success" onClick={handleCloseIssue} style={{marginTop: "10px"}} className="text-white">
+                            Close Issue
+                            </CButton>
+                        )}
+                        {/* Botón para reabrir issue, visible solo si está cerrada y el usuario es admin */}
+                        {status === "Closed" && user.role === "admin" && (
+                            <CButton color="danger" onClick={handleReopenIssue} style={{ marginTop: "10px" }} className="text-white">
+                                Reopen Issue
+                            </CButton>
                         )}
                     </CCardBody>
                 </CCard>
