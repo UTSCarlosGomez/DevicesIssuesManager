@@ -17,6 +17,8 @@ const WidgetsDropdown = () => {
   const [contadorRooms, guardarRooms] = useState({ count: 0, chartData: []})
   const [contadorDevices, guardarDevices] = useState({ count: 0, chartData: []})
   const [issuesData, guardarIssues] = useState({ count: 0, chartData: [] })
+  const user = JSON.parse(localStorage.getItem("user"))
+
 
   //funcion para agrupar datos por fecha
   const agruparPorFecha = (datos) => {
@@ -106,7 +108,8 @@ const WidgetsDropdown = () => {
 
   return (
     <CRow xs={{ gutter: 4 }}>
-      <CCol sm={6} xl={4} xxl={3}>
+      {user.role === 'admin' && (
+        <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
           color="primary"
           value={`${contadorUsers.count} Users`}
@@ -170,6 +173,8 @@ const WidgetsDropdown = () => {
           }
         />
       </CCol>
+      )}
+      
       <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
           color="info"

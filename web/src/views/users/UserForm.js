@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react'
 import clienteAxios from '../../config/axios'
-import { CButton, CForm, CFormInput, CFormLabel, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
+import { CButton, CForm, CFormInput, CFormLabel, CFormSelect, CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 
 const UserForm = ({ user, onSave, onClose }) => {
   const [name, setName] = useState('')
@@ -63,7 +63,12 @@ const UserForm = ({ user, onSave, onClose }) => {
           </div>
           <div className="mb-3">
             <CFormLabel>Role</CFormLabel>
-            <CFormInput value={role} onChange={(e) => setRole(e.target.value)} required />
+            <CFormSelect value={role} onChange={(e) => setRole(e.target.value)} required>
+              <option>Select Role</option>
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+
+            </CFormSelect> 
           </div>
           <div className="mb-3">
             <CFormLabel>{user ? 'New Password (leave blank to keep current)' : 'Password'}</CFormLabel>

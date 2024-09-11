@@ -40,10 +40,16 @@ const createIssue = async (req, res) => {
 };
 
 // Controlador para obtener todos los problemas
-const getIssues = async (_, res) => {
+const getIssues = async (req, res) => {
   try {
+    const user = req.user
+    let query = {};
+
+    if(user.role === 'student'){
+      query = { 'creator.id': user._id }
+    }
     // Obtener todos los problemas de la base de datos
-    const issues = await Issue.find().populate({
+    const issues = await Issue.find(query).populate({
       path: 'device',
       populate: {path: 'room'}
     })
@@ -77,6 +83,9 @@ const getIssue = async (req, res) => {
     // Verificar si el problema fue encontrado
     if (!issue) return res.status(404).json({ message: 'Issue not found' });
     /* console.log(issue) */
+    if(req.user.role === 'student' && issue.creator.id.toString() !== req.user._id.toString()){
+      return res.status(403).json({ message: 'No tienes permiso para ver este issue' });
+    }
     // Enviar el problema como respuesta
     return res.json(issue);
     

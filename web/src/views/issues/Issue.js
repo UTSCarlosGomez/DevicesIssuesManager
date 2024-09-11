@@ -11,6 +11,7 @@ const Issue = () => {
     const [note, setNote] = useState("");
     const [status, setStatus] = useState('');
     const [devicesStatus, setDevicesStatus] = useState('');
+    const user = JSON.parse(localStorage.getItem("user"));
 
 
     const fetchIssue = async () => {
@@ -81,8 +82,6 @@ const Issue = () => {
         }
     }
 
-    const user = JSON.parse(localStorage.getItem("user"));
-
     const handleReopenIssue = async () => {
         try {
             await clienteAxios.put(`/issues/${id}`, {
@@ -124,15 +123,19 @@ const Issue = () => {
                                     {issue.notes.map((note, index) => (
                                         <li key={index}>
                                             {note.creatorName}: {note.content} (on {new Date(note.createdAt).toLocaleDateString()})
-                                            <CButton color="warning" size="sm" className="text-white" style={{margin: '5px'}} onClick={() => handleEditNote(note._id)}>Edit</CButton>
-                                            <CButton color="danger" size="sm" className="text-white" onClick={() => handleDeleteNote(note._id)}>Delete</CButton>
+                                            {user.role === 'admin' && (
+                                                <>
+                                                    <CButton color="warning" size="sm" className="text-white" style={{margin: '5px'}} onClick={() => handleEditNote(note._id)}>Edit</CButton>
+                                                    <CButton color="danger" size="sm" className="text-white" onClick={() => handleDeleteNote(note._id)}>Delete</CButton>
+                                                </>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         )}
 
-                        {status === "Open" && (
+                        {status === "Open" && user.role === "admin" && (
                             <CForm>
                                 <CFormTextarea
                                     value={note}

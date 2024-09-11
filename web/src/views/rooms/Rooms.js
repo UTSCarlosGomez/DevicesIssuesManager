@@ -9,7 +9,8 @@ const Rooms = () => {
     const [rooms, setRooms] = useState([])
     const [selectedRoom, setSelectedRoom] = useState(null)
     const [isEditing, setIsEditing] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false);
+    const user = JSON.parse(localStorage.getItem("user"))
 
     const fetchRooms = async () => {
         try {
@@ -42,9 +43,14 @@ const Rooms = () => {
             <CCol xs={12}>
                 <CCard>
                     <CCardHeader><strong>Rooms</strong>
-                    <CButton color="primary" style={{float: 'right'}} onClick={() => setIsEditing(true)}>
-                        Create Room
-                    </CButton>
+                    {user.role === 'admin' && (
+                        <>
+                        <CButton color="primary" style={{float: 'right'}} onClick={() => setIsEditing(true)}>
+                            Create Room
+                        </CButton>
+                        </>
+                    )}
+                    
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -60,8 +66,13 @@ const Rooms = () => {
                                             <p><strong>Categoria: </strong>{room.categoria}</p>
                                         </CCardBody>
                                         <CCardFooter>
-                                            <CButton color="primary" style={{marginRight: '10px'}} onClick={() => {setSelectedRoom(room); setIsEditing(true)}}>Edit</CButton>
-                                            <CButton color="danger" className="text-white" onClick={() =>{setSelectedRoom(room); setIsDeleting(true)}}>Delete</CButton>
+                                            {user.role === 'admin' && (
+                                                <>
+                                                <CButton color="primary" style={{marginRight: '10px'}} onClick={() => {setSelectedRoom(room); setIsEditing(true)}}>Edit</CButton>
+                                                <CButton color="danger" className="text-white" onClick={() =>{setSelectedRoom(room); setIsDeleting(true)}}>Delete</CButton>
+                                                </>
+                                            )}
+                                            <label style={{float: 'right'}}>UTS</label>
                                         </CCardFooter>
                                     </CCard>
                                 </CCol>

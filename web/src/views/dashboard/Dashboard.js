@@ -10,9 +10,12 @@ import clienteAxios from '../../config/axios'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
+import Issues from '../issues/Issues'
+import Users from '../users/Users'
 
 const Dashboard = () => {
   const [users, guardarUsers] = useState([])
+  const user = JSON.parse(localStorage.getItem("user"))
 
   useEffect(() => {
     const consultarAPI = async () => {
@@ -32,51 +35,12 @@ const Dashboard = () => {
       <br></br>
       <CRow>
         <CCol xs>
-          <CCard className="mb-4">
-            <CCardHeader>Usuarios</CCardHeader>
-            <CCardBody>
-              <CTable align="middle" className="mb-0 border" hover responsive>
-                <CTableHead className="text-nowrap">
-                  <CTableRow>
-                    <CTableHeaderCell className="bg-body-tertiary text-center">
-                      <CIcon icon={cilPeople} />
-                    </CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">User</CTableHeaderCell>
-
-                    <CTableHeaderCell className="bg-body-tertiary">Email</CTableHeaderCell>
-                    <CTableHeaderCell className="bg-body-tertiary">Role</CTableHeaderCell>
-
-                    <CTableHeaderCell className="bg-body-tertiary">Accion</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {users.map((user, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
-                        <CAvatar size="md" status="success">
-                          <CIcon icon={cilPeople}/>
-                        </CAvatar>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{user.name}</div>
-                      </CTableDataCell>
-
-                      <CTableDataCell>
-                          <div className="fw-semibold">{user.email}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                          <div className="fw-semibold">{user.role}</div>
-                      </CTableDataCell>
-
-                      <CTableDataCell>
-                        <CButton color='primary'>Accion</CButton>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
-            </CCardBody>
-          </CCard>
+          {user.role === 'admin' && (
+            <Users/>
+          )}
+          {user.role==='student' && (
+            <Issues/>
+          )}
         </CCol>
       </CRow>
     </>

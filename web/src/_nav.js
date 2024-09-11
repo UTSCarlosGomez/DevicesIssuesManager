@@ -18,6 +18,9 @@ import {
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
+// Obtener el rol del usuario desde localStorage
+const user = JSON.parse(localStorage.getItem('user'))
+
 const _nav = [
   {
     component: CNavItem,
@@ -44,7 +47,8 @@ const _nav = [
     to: '/issues',
     icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
   },
-  {
+  // Mostrar solo si el usuario es admin
+  user?.role === 'admin' && {
     component: CNavItem,
     name: 'Users',
     to: '/users',
@@ -57,5 +61,7 @@ const _nav = [
     icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
   },
 ]
+// Filtrar los elementos no válidos (por ejemplo, el ítem 'Users' si no es admin)
+const filteredNav = _nav.filter(Boolean)
 
-export default _nav
+export default filteredNav

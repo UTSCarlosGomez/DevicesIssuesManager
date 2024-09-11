@@ -10,7 +10,8 @@ const Devices = () => {
     const [devices, setDevices] = useState([]);
     const [selectedDevice, setSelectedDevice] = useState(null);
     const [isEditing, setIsEditing] = useState(false)
-    const [isDeleting, setIsDeleting] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false);
+    const user = JSON.parse(localStorage.getItem("user"));
     
     const fetchDevices = async () => {
         try {
@@ -44,9 +45,13 @@ const Devices = () => {
                 <CCard>
                     <CCardHeader>
                         <strong>Devices</strong>
-                        <CButton color="primary" style={{ float: 'right' }} onClick={() => setIsEditing(true)}>
-                            Create Device
-                        </CButton>
+                        {user.role === 'admin' && (
+                            <>
+                                <CButton color="primary" style={{ float: 'right' }} onClick={() => setIsEditing(true)}>
+                                Create Device
+                                </CButton>
+                            </>
+                        )}
                     </CCardHeader>
                     <CCardBody>
                         <CRow>
@@ -66,18 +71,23 @@ const Devices = () => {
                                             )}
                                         </CCardBody>
                                         <CCardFooter>
-                                            <CButton color="primary" style={{ marginRight: '10px' }} onClick={() => {
-                                                setSelectedDevice(device);
-                                                setIsEditing(true);
-                                            }}>
-                                                Edit
-                                            </CButton>
-                                            <CButton color="danger" className="text-white" onClick={() => {
-                                                setSelectedDevice(device);
-                                                setIsDeleting(true);
-                                            }}>
-                                                Delete
-                                            </CButton>
+                                            {user.role === 'admin' && (
+                                                <>
+                                                    <CButton color="primary" style={{ marginRight: '10px' }} onClick={() => {
+                                                    setSelectedDevice(device);
+                                                    setIsEditing(true);
+                                                    }}>
+                                                        Edit
+                                                    </CButton>
+                                                    <CButton color="danger" className="text-white" onClick={() => {
+                                                        setSelectedDevice(device);
+                                                        setIsDeleting(true);
+                                                    }}>
+                                                        Delete
+                                                    </CButton>
+                                                </>
+                                            )}
+                                            <label style={{ float: 'right' }}>UTS</label>
                                         </CCardFooter>
                                     </CCard>
                                 </CCol>

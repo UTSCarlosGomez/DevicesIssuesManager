@@ -7,6 +7,8 @@ import { CCard, CCardBody, CCardHeader, CCardText, CCardTitle, CCol, CRow, CButt
 const Issues = () => {
     const [issues, setIssues] = useState([]);
     const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem("user"))
+
     const fetchIssues = async () => {
         try {
             const response = await clienteAxios.get('/issues');
